@@ -6,7 +6,6 @@ import { toast } from 'sonner';
 export const Admin: React.FC = () => {
   const [guestTitle, setGuestTitle] = useState('Mr.');
   const [guestName, setGuestName] = useState('');
-  const [guestCount, setGuestCount] = useState('1');
   const [generatedUrl, setGeneratedUrl] = useState('');
   const [copied, setCopied] = useState(false);
 
@@ -17,14 +16,18 @@ export const Admin: React.FC = () => {
       return;
     }
 
-    // Build URL with params
-    const baseUrl = window.location.origin;
-    const params = new URLSearchParams();
-    if (guestTitle) params.append('title', guestTitle);
-    params.append('name', guestName.trim());
-    if (guestCount) params.append('guests', guestCount);
+    let displayName = '';
+    if (guestTitle === 'Family') {
+      displayName = `${guestName.trim()} and Family`;
+    } else if (guestTitle === 'Dear') {
+      displayName = guestName.trim();
+    } else {
+      displayName = `${guestTitle} ${guestName.trim()}`.trim();
+    }
 
-    const fullUrl = `${baseUrl}/?${params.toString()}`;
+    // Build URL with displayName to display elegantly in the invitation
+    const baseUrl = window.location.origin;
+    const fullUrl = `${baseUrl}/${encodeURIComponent(displayName)}`;
     setGeneratedUrl(fullUrl);
     setCopied(false);
     toast.success('Invitation link generated successfully!');
@@ -41,11 +44,20 @@ export const Admin: React.FC = () => {
   };
 
   const generateFullMessage = (url: string, title: string, name: string) => {
-    return `Dear ${title ? title + ' ' : ''}${name} ❤️
+    let displayName = '';
+    if (title === 'Family') {
+      displayName = `${name.trim()} and Family`;
+    } else if (title === 'Dear') {
+      displayName = name.trim();
+    } else {
+      displayName = `${title} ${name.trim()}`.trim();
+    }
+
+    return `Dear ${displayName} ❤️
 
 With joyful hearts, we warmly invite you to celebrate one of the most special days of our lives as we begin our journey together.
 
-Please view our homecoming invitation and all the event details through the link below 🌐:
+Please view our wedding invitation and all the event details through the link below 🌐:
 
 ${url}
 
@@ -122,7 +134,6 @@ With love,
                     onChange={(e) => setGuestTitle(e.target.value)}
                     className="w-full bg-white px-6 py-4 rounded-full border border-stone-200/80 focus:ring-2 focus:ring-brand-lavender/30 focus:border-brand-plum/40 outline-none transition-all font-serif text-lg shadow-inner text-stone-800 cursor-pointer"
                   >
-                    <option value="">No Prefix</option>
                     <option value="Mr.">Mr.</option>
                     <option value="Mrs.">Mrs.</option>
                     <option value="Miss">Miss</option>
@@ -146,22 +157,6 @@ With love,
                     className="w-full bg-white px-6 py-4 rounded-full border border-stone-200/80 focus:ring-2 focus:ring-brand-lavender/30 focus:border-brand-plum/40 outline-none transition-all font-serif italic text-lg shadow-inner text-stone-800 placeholder:text-stone-400"
                   />
                 </div>
-
-                <div>
-                  <label className="block text-xs uppercase tracking-[0.2em] font-bold text-stone-500 mb-3 flex items-center gap-2 ml-1">
-                    <User className="w-4 h-4 text-brand-plum" />
-                    Guest Count
-                  </label>
-                  <input
-                    type="number"
-                    min="1"
-                    required
-                    placeholder="Number of guests allowed"
-                    value={guestCount}
-                    onChange={(e) => setGuestCount(e.target.value)}
-                    className="w-full bg-white px-6 py-4 rounded-full border border-stone-200/80 focus:ring-2 focus:ring-brand-lavender/30 focus:border-brand-plum/40 outline-none transition-all font-serif text-lg shadow-inner text-stone-800 placeholder:text-stone-400"
-                  />
-                </div>
               </div>
 
 
@@ -171,7 +166,7 @@ With love,
                 className="w-full bg-stone-800 text-brand-rose py-5 rounded-full font-sans tracking-[0.3em] font-bold text-xs uppercase hover:bg-stone-900 transition-all shadow-[0_10px_20px_rgba(0,0,0,0.15)] hover:shadow-[0_15px_30px_rgba(0,0,0,0.25)] active:scale-[0.98] flex items-center justify-center gap-3"
               >
                 <LinkIcon className="w-4 h-4 text-brand-plum" />
-                Generate Invitation Link
+                Generate Link
               </button>
             </form>
           </motion.div>

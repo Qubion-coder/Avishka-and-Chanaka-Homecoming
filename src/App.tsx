@@ -20,7 +20,13 @@ export default function App() {
   const nameParam = params.get('name') || '';
   const eventParam = params.get('event') || 'both';
 
-  const fullInviteeName = `${titleParam} ${nameParam}`.trim();
+  let fullInviteeName = `${titleParam} ${nameParam}`.trim();
+  
+  if (!fullInviteeName && window.location.pathname !== '/' && window.location.pathname !== '/admin') {
+    // Decode the path segment (e.g., "/Mr.%20Sanjaya" -> "Mr. Sanjaya")
+    const pathName = decodeURIComponent(window.location.pathname.slice(1));
+    fullInviteeName = pathName.trim();
+  }
 
   let eventLabel = 'Our Homecoming Celebration';
 
