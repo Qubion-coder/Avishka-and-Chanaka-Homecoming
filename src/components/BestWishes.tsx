@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { SHEET_SCRIPT_URL } from '../utils/sheets';
 import { motion } from 'motion/react';
 import { Heart, Send, Sparkles, Loader2 } from 'lucide-react';
 
@@ -20,7 +21,7 @@ export const BestWishes = () => {
       payload.append('name', name);
       payload.append('message', message);
 
-      const scriptUrl = "https://script.google.com/macros/s/AKfycbxT6naTh_z7pNyfIedLGYart4d7mLDvm0uNJYk0KwbhXEqG9nNrtAzrP6PwxSiVGd3F/exec";
+      const scriptUrl = SHEET_SCRIPT_URL;
       
       await fetch(scriptUrl, {
         method: 'POST',

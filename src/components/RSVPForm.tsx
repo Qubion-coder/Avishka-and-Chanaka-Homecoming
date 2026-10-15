@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { SHEET_SCRIPT_URL } from '../utils/sheets';
 import { motion, AnimatePresence } from 'motion/react';
 import { CheckCircle, Loader2, Heart, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
@@ -20,7 +21,7 @@ export const RSVPForm: React.FC<RSVPFormProps> = ({ inviteeName = '', eventName 
     thoughts: '',
   });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
-  const scriptUrl = "https://script.google.com/macros/s/AKfycbxT6naTh_z7pNyfIedLGYart4d7mLDvm0uNJYk0KwbhXEqG9nNrtAzrP6PwxSiVGd3F/exec";
+  const scriptUrl = SHEET_SCRIPT_URL;
 
   useEffect(() => {
     if (inviteeName) {
@@ -39,6 +40,7 @@ export const RSVPForm: React.FC<RSVPFormProps> = ({ inviteeName = '', eventName 
       payload.append('fullName', formData.fullName);
       payload.append('attendance', formData.attendance);
       payload.append('guests', formData.attendance === 'yes' ? formData.guests : '0'); 
+      payload.append('event', eventName);
       payload.append('thoughts', formData.thoughts);
       payload.append('dietaryNotes', formData.thoughts); // Fallback for old sheet column
 

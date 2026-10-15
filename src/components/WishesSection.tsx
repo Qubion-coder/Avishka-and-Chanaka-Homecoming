@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { SHEET_SCRIPT_URL } from '../utils/sheets';
 import { motion, AnimatePresence } from 'motion/react';
 import { Send, Loader2, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
@@ -35,7 +36,7 @@ export const WishesSection: React.FC<WishesSectionProps> = ({ eventParam = 'both
       setFormData(prev => ({ ...prev, name: inviteeName }));
     }
   }, [inviteeName]);
-  const scriptUrl = "https://script.google.com/macros/s/AKfycbxT6naTh_z7pNyfIedLGYart4d7mLDvm0uNJYk0KwbhXEqG9nNrtAzrP6PwxSiVGd3F/exec";
+  const scriptUrl = SHEET_SCRIPT_URL;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

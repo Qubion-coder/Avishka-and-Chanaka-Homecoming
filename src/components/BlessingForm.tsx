@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { SHEET_SCRIPT_URL } from '../utils/sheets';
 import { motion } from 'motion/react';
 import { useForm } from 'react-hook-form';
 import { Heart } from 'lucide-react';
@@ -12,7 +13,7 @@ interface BlessingData {
 export function BlessingForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { register, handleSubmit, reset, formState: { errors } } = useForm<BlessingData>();
-  const scriptUrl = "https://script.google.com/macros/s/AKfycbxT6naTh_z7pNyfIedLGYart4d7mLDvm0uNJYk0KwbhXEqG9nNrtAzrP6PwxSiVGd3F/exec";
+  const scriptUrl = SHEET_SCRIPT_URL;
 
   const onSubmit = async (data: BlessingData) => {
     setIsSubmitting(true);
